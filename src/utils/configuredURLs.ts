@@ -11,9 +11,9 @@ interface URLs {
 }
 
 const defaultURLs = {
-  baseURL: 'https://hdp2b8cumj.execute-api.us-east-1.amazonaws.com/Prod/',
-  handRaiseWSSURL: 'wss://g903wu7l95.execute-api.us-east-1.amazonaws.com/Prod',
-  messagingWSSURL: 'wss://4xavicolui.execute-api.us-east-1.amazonaws.com/Prod',
+  baseURL: 'https://hphu9v9oxd.execute-api.us-east-1.amazonaws.com/Prod/', //'https://hdp2b8cumj.execute-api.us-east-1.amazonaws.com/Prod/',
+  handRaiseWSSURL: 'wss://l8vfpdtced.execute-api.us-east-1.amazonaws.com/Prod', //'wss://g903wu7l95.execute-api.us-east-1.amazonaws.com/Prod',
+  messagingWSSURL: 'wss://hvypowpblk.execute-api.us-east-1.amazonaws.com/Prod', //'wss://4xavicolui.execute-api.us-east-1.amazonaws.com/Prod',
   broadcasts: {
     DASH: '',
     MSS: '',
