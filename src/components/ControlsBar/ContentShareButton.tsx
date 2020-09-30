@@ -23,7 +23,7 @@ const ContentShareButton: React.FC<Props> = ({ withPulse = false }) => {
       ? 'Controls.stopShareTooltip'
       : 'Controls.startShareTooltip'
   );
-
+  console.log("is Local user sharing? ", isLocalUserSharing);
   return (
     <BaseControlButton
       message={message}

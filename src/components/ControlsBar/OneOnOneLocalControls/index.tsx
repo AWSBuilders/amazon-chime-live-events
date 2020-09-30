@@ -12,6 +12,7 @@ import { ONE_ON_ONE_CONTROL_PORTAL } from '..';
 import useTranslate from '../../../hooks/useTranslate';
 
 import styles from './OneOnOneLocalControls.css';
+import ContentShareButton from "../ContentShareButton";
 const cx = classNames.bind(styles);
 
 const LocalUserControls: React.FC = () => {
@@ -24,6 +25,7 @@ const LocalUserControls: React.FC = () => {
         <MuteButton />
         <VideoButton />
         <VolumeButton source={MeetingAudio.ONE_ON_ONE} />
+        <ContentShareButton withPulse />
       </ButtonGroup>
     </Portal>
   );

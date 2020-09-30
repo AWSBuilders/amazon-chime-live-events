@@ -11,7 +11,8 @@ import { useMetaState } from '../../../providers/MetaStateProvider';
 import AttendeeStatus from './AttendeeStatus';
 import { LocalTileProvider } from '../../../providers/LocalTileProvider';
 
-import styles from './OneOnOneMeeting.css';
+import styles from "./OneOnOneMeeting.css";
+import Chat from "../../Chat";
 const cx = classNames.bind(styles);
 
 const OneOnOneMeeting: React.FC = () => {
@@ -32,6 +33,11 @@ const OneOnOneMeeting: React.FC = () => {
           </LocalTileProvider>
         </>
       )}
+      <div className={cx("chat")}>
+        chat~~~~~~~~~~
+        <Chat />
+        chat~~~~~~~~~~
+      </div>
       <AttendeeStatus />
     </div>
   );

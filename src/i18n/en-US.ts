@@ -81,6 +81,7 @@ export default {
   'Moderation.talentMeetingDetailsError':
     'There was an error getting necessary information about the talent meeting.',
 
+  "InitialScreen.description": "손을 들고 질문하세요",
   'RaiseHand.askAQuestion': 'Ask a question',
   'RaiseHand.yourHandIsRaised': 'Your hand is raised',
   'RaiseHand.helpText':

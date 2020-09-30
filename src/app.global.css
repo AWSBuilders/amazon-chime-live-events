@@ -9,6 +9,25 @@
 :root {
   --local_video_container_height: 150px;
   --right_panel_width: 320px;
+  --local_video_container_height: 150px;
+  --right_panel_width: 320px;
+  --screen_picker_width: 800px;
+  --screen_picker_height: 600px;
+  --color_alabaster: #fafafa;
+  --color_mercury: #e9e9e9;
+  --color_alto: #dedede;
+  --color_silver_chalice: #9e9e9e;
+  --color_tundora: #454545;
+  --color_mine_shaft_dark: #333;
+  --color_mine_shaft_medium: #2d2d2d;
+  --color_mine_shaft_light: #252525;
+  --color_cod_gray_medium: #111;
+  --color_cod_gray_light: #1b1b1b;
+  --color_black: #000;
+  --color_thunderbird: #d62f12;
+  --color_black_medium_opacity: rgba(0, 0, 0, 0.6);
+  --color_black_low_opacity: rgba(0, 0, 0, 0.25);
+  --color_green: #09ff00;
 
   /*
    * Brand

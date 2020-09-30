@@ -10,7 +10,10 @@ const useMeetingMessaging = () => {
   const { meetingStatus } = useContext(getMeetingStatusContext());
 
   useEffect(() => {
+    console.log("useMeetingMessaging???");
     if (meetingStatus !== MeetingStatus.Succeeded) {
+      console.log("useMeetingMessaging??? return");
+
       return;
     }
 

@@ -22,7 +22,12 @@ import {
 } from '../providers/NotificationProvider';
 import { LiveRosterProvider } from './LiveRosterProvider';
 
-import styles from './Attendee.css';
+import styles from "./Attendee.css";
+import ContentShare from "./ContentShare";
+import { useContentShareState } from "../providers/ContentShareProvider";
+import { useLocalTileApi } from "../providers/LocalTileProvider";
+import Chat from "./Chat";
+//import Controls from "./Controls";
 const cx = classNames.bind(styles);
 
 interface Props {
@@ -30,13 +35,15 @@ interface Props {
   fullScreenVideo?: boolean;
   showSelfView?: boolean;
   showLiveView?: boolean;
+  showAttendeeScreen?: boolean;
 }
 
 export default function Attendee({
   controls,
   fullScreenVideo,
   showSelfView = true,
-  showLiveView = false,
+  showAttendeeScreen = false,
+  showLiveView = false
 }: Props) {
   const { meetingStatus } = useContext(getMeetingStatusContext());
   const location = useLocation();
@@ -49,6 +56,8 @@ export default function Attendee({
   const { isLocalUserLive } = useLiveAttendees();
   const translate = useTranslate();
   const notifDispatch = useNotificationDispatch();
+  const { isLocalUserSharing, isLocalShareLoading } = useContentShareState();
+  const { stopLocalVideoTile } = useLocalTileApi();
 
   const onTryAgain = () => {
     window.location.reload();
@@ -70,49 +79,71 @@ export default function Attendee({
           errorMessage={translate('Attendee.meetingJoinFailed')}
         />
       )}
+      {console.log("0Attendee---isLiveEvent", isLiveEvent)}
+      {console.log("0Attendee---showLiveView", showLiveView)}
+      {console.log("0Attendee---showSelfView", showSelfView)}
+      {console.log("0Attendee---isLocalUserSharing", isLocalUserSharing)}
+      {console.log("0Attendee---isLocalShareLoading", isLocalShareLoading)}
       {meetingStatus === MeetingStatus.Succeeded && (
-        <div className={cx('left')}>
-          <div
-            className={cx('attendeeRemoteMedia', {
-              fullScreenVideo,
-            })}
-          >
-            {isLiveEvent || showLiveView ? (
-              <LiveRosterProvider>
-                <LiveMediaGroup theaterView />
-              </LiveRosterProvider>
-            ) : (
-              <AttendeeVideoGroup showLocalTile={false} />
-            )}
-          </div>
-          {showSelfView &&
-            (isLiveEvent ? (
-              <LiveIndicator
-                position='bottom-right'
-                className={cx('liveAttendeeLocalVideo')}
-                isLive={isLocalUserLive}
-              >
-                <p className={cx('liveLocalVideoTitle')}>
-                  {isLocalUserLive
-                    ? translate('Attendee.youAreLive')
-                    : translate('Attendee.youAreNotLive')}
-                  {!isLocalUserLive && (
-                    <Tooltip tooltip={translate('Attendee.notLiveHelp')}>
-                      <i className={`${cx('helpIcon')} ${icons.HELP}`} />
-                    </Tooltip>
-                  )}
-                </p>
-                <LocalVideo />
-              </LiveIndicator>
-            ) : (
-              <div className={cx('attendeeLocalVideo')}>
-                <LocalVideo />
+        <>
+          <div className={cx("left")}>
+            <div
+              className={cx("attendeeRemoteMedia", {
+                fullScreenVideo
+              })}
+            >
+              {isLiveEvent || showLiveView ? (
+                <LiveRosterProvider>
+                  <LiveMediaGroup theaterView />
+                </LiveRosterProvider>
+              ) : (
+                <AttendeeVideoGroup showLocalTile={false} />
+              )}
+            </div>
+
+            {showSelfView &&
+              !isLocalUserSharing &&
+              (isLiveEvent ? (
+                <LiveIndicator
+                  position="bottom-right"
+                  className={cx("liveAttendeeLocalVideo")}
+                  isLive={isLocalUserLive}
+                >
+                  <p className={cx("liveLocalVideoTitle")}>
+                    {isLocalUserLive
+                      ? translate("Attendee.youAreLive")
+                      : translate("Attendee.youAreNotLive")}
+                    {!isLocalUserLive && (
+                      <Tooltip tooltip={translate("Attendee.notLiveHelp")}>
+                        <i className={`${cx("helpIcon")} ${icons.HELP}`} />
+                      </Tooltip>
+                    )}
+                  </p>
+                  <LocalVideo />
+                </LiveIndicator>
+              ) : (
+                <div className={cx("attendeeLocalVideo")}>
+                  <LocalVideo />
+                </div>
+              ))}
+            {isLocalUserSharing || showAttendeeScreen ? (
+              <div>
+                {stopLocalVideoTile()}
+                <ContentShare />
               </div>
-            ))}
-          <div className={cx('localControls')}>
-            <div className={cx('controls')}>{controls}</div>
+            ) : (
+              <></>
+            )}
+            <div className={cx("localControls")}>
+              <div className={cx("controls")}>{controls}</div>
+            </div>
+            <div className={cx("right")}>
+              <div className={cx("chat")}>
+                <Chat />
+              </div>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

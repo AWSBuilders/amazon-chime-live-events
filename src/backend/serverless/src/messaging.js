@@ -261,6 +261,7 @@ exports.sendmessage = async event => {
       return { statusCode: 500, body: error.message };
     }
   } // Allow only moderators to send messages other then "Init"
+  /*
   else if (!isModerator) {
     const errorMessage = `Unauthorized attempt to send message. Type: ${attendeeType}, ID: ${AttendeeId}`;
     console.error(errorMessage);
@@ -273,19 +274,63 @@ exports.sendmessage = async event => {
     console.error(errorMessage);
     return { statusCode: 500, body: errorMessage };
   }
-
+*/
   try {
-    const params = {
-      Key: {
-        MeetingId: {
-          S: event.requestContext.authorizer.MeetingId,
+    if (parsedMessage.type === "chat-message") {
+      let attendees = {};
+      try {
+        attendees = await ddb
+          .query({
+            ExpressionAttributeValues: {
+              ":meetingId": { S: event.requestContext.authorizer.MeetingId }
+            },
+            KeyConditionExpression: "MeetingId = :meetingId",
+            ProjectionExpression: "ConnectionId",
+            TableName: CONNECTIONS_TABLE_NAME
+          })
+          .promise();
+      } catch (e) {
+        return { statusCode: 500, body: e.stack };
+      }
+      const apigwManagementApi = new AWS.ApiGatewayManagementApi({
+        apiVersion: "2018-11-29",
+        endpoint: `${event.requestContext.domainName}/${event.requestContext.stage}`
+      });
+      const postData = JSON.parse(event.body).data;
+      const postCalls = attendees.Items.map(async connection => {
+        const connectionId = connection.ConnectionId.S;
+        try {
+          await apigwManagementApi
+            .postToConnection({ ConnectionId: connectionId, Data: postData })
+            .promise();
+        } catch (e) {
+          if (e.statusCode === 410) {
+            console.log(`found stale connection, skipping ${connectionId}`);
+          } else {
+            console.error(
+              `error posting to connection ${connectionId}: ${e.message}`
+            );
+          }
+        }
+      });
+      try {
+        await Promise.all(postCalls);
+      } catch (e) {
+        console.error(`failed to post: ${e.message}`);
+        return { statusCode: 500, body: e.stack };
+      }
+    } else {
+      const params = {
+        Key: {
+          MeetingId: {
+            S: event.requestContext.authorizer.MeetingId
+          },
+          AttendeeId: {
+            S: targetAttendeeId
+          }
         },
-        AttendeeId: {
-          S: targetAttendeeId,
-        },
-      },
-      TableName: CONNECTIONS_TABLE_NAME,
-    };
+        TableName: CONNECTIONS_TABLE_NAME
+      };
 
     const attendeeConnection = await ddb.getItem(params).promise();
     console.log(
@@ -312,9 +357,10 @@ exports.sendmessage = async event => {
       );
     }
 
-    const attendeeConnectionId = attendeeConnection.Item.ConnectionId.S;
-    await postToConnection(apigwManagementApi, attendeeConnectionId, message);
-    return { statusCode: 200, body: 'Message sent.' };
+      const attendeeConnectionId = attendeeConnection.Item.ConnectionId.S;
+      await postToConnection(apigwManagementApi, attendeeConnectionId, message);
+    }
+    return { statusCode: 200, body: "Message sent." };
   } catch (e) {
     console.error(`Failed to post message: ${e.message}`);
     return { statusCode: 500, body: e.stack };

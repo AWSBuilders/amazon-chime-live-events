@@ -12,6 +12,7 @@ import { VideoStatus } from '../types/VideoStatus';
 import Tooltip from './Tooltip';
 import icons from '../constants/icons';
 import useTranslate from '../hooks/useTranslate';
+import ContentShareButton from "../components/ControlsBar/ContentShareButton";
 
 import styles from './Controls.css';
 const cx = classNames.bind(styles);
@@ -158,16 +159,8 @@ export default function Controls(props: Props) {
         </Tooltip>
       )}
       {allowLeave && (
-        <Tooltip tooltip={translate('Controls.leaveMeetingTooltip')}>
-          <IconButton
-            variant='danger'
-            onClick={() => {
-              chime?.disableVideoAndLeaveRoom().then(() => {
-                history.push(`${routes.HOME}`);
-              });
-            }}
-            icon={icons.CLOSE}
-          />
+        <Tooltip tooltip={translate("Controls.leaveMeetingTooltip")}>
+          <ContentShareButton withPulse />
         </Tooltip>
       )}
     </ButtonGroup>

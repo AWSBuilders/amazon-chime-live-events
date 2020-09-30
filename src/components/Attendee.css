@@ -1,5 +1,6 @@
 .attendee {
   display: flex;
+  background: var(--color_mine_shaft_light);
   height: 100%;
   align-items: center;
   justify-content: center;
@@ -22,7 +23,14 @@
   height: 100%;
   align-items: center;
 }
-
+.right {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 var(--right_panel_width);
+  background: var(--color_mine_shaft_medium);
+  height: 100%;
+  overflow: hidden;
+}
 .spacer {
   margin-top: 12rem;
 }
@@ -33,7 +41,14 @@
   bottom: 2.5rem;
   z-index: 100;
 }
-
+.chat {
+  flex: 1 1 auto;
+  overflow-y: scroll;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+}
 .attendeeLocalVideo {
   position: absolute;
   bottom: 1rem;

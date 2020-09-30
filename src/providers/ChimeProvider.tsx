@@ -219,6 +219,15 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
         })
       );
     }
+
+    console.log(
+      "createroom-????--this.configuration.Meeting =",
+      JoinInfo.Meeting
+    );
+    console.log(
+      "createroom-????--this.configuration.Attendee =",
+      JoinInfo.Attendee
+    );
     this.configuration = new MeetingSessionConfiguration(
       JoinInfo.Meeting,
       JoinInfo.Attendee
@@ -415,7 +424,9 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
 
   joinRoomMessaging = async (): Promise<void> => {
     if (!this.configuration) {
-      this.logError(new Error('configuration does not exist'));
+      console.log("joinRoomMessaging error return ");
+
+      this.logError(new Error("configuration does not exist"));
       return;
     }
     const headers = this.getRequestHeaders() as RequestHeadersType;
@@ -429,6 +440,9 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
     const encodedAuthPayload = window.btoa(JSON.stringify(headers));
 
     const messagingUrl = `${messagingWSSURL}?Authorization=${encodedAuthPayload}&MeetingId=${this.configuration.meetingId}&AttendeeId=${this.configuration.credentials?.attendeeId}&JoinToken=${this.configuration.credentials?.joinToken}`;
+
+    //console.log("joinRoomMessaging messagingUrl === ", messagingUrl);
+
     this.messagingSocket = new ReconnectingPromisedWebSocket(
       messagingUrl,
       [],
@@ -436,8 +450,17 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
       new DefaultPromisedWebSocketFactory(new DefaultDOMWebSocketFactory()),
       new FullJitterBackoff(1000, 0, 10000)
     );
+    console.log(
+      "joinRoomMessaging-????-- messagingSocket=",
+      this.messagingSocket
+    );
 
-    this.messagingSocket.addEventListener('open', () => {
+    this.messagingSocket.addEventListener("open", () => {
+      console.log(
+        "joinRoomMessaging addEventListener-????-open = ",
+        this.configuration?.credentials?.attendeeId
+      );
+
       if (this.configuration?.credentials?.attendeeId) {
         const payload: MessagePayload = {
           targetAttendeeId: this.configuration?.credentials?.attendeeId,
@@ -454,6 +477,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
     await this.messagingSocket.open(ChimeSdkWrapper.WEB_SOCKET_TIMEOUT_MS);
 
     window.addEventListener('beforeunload', () => {
+      console.log("joinRoomMessaging addEventListener-????-beforeunload");
       this.stopWsStabilizer();
       console.debug('Closing messaging socket.');
       this.messagingSocket?.close(500, 1000, 'Unload').then(() => {
@@ -464,16 +488,23 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
     this.messagingSocket.addEventListener('message', (event: Event) => {
       try {
         const data = JSON.parse((event as MessageEvent).data);
+
+        console.log(
+          "joinRoomMessaging addEventListener-????-message",
+          data.payload
+        );
+
         // Do not process ping messages.
         if (data?.type === 'ping') return;
 
-        const { attendeeId } = data.payload;
+        const { targetAttendeeId } = data.payload;
 
         let name;
-        if (this.roster[attendeeId]) {
-          name = this.roster[attendeeId].name;
+        if (this.roster[targetAttendeeId]) {
+          name = this.roster[targetAttendeeId].name;
         }
 
+        console.log("joinRoomMessaging attendeeId???= ", targetAttendeeId);
         this.publishMessageUpdate({
           type: data.type,
           payload: data.payload,
@@ -488,7 +519,12 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
 
   // eslint-disable-next-line
   sendMessage = (type: MessageType, payload: MessagePayload) => {
+    console.log("sendMessage?????? type", type);
+    console.log("sendMessage?????? payload", payload);
+    console.log("sendMessage?????? messagingSocket", this.messagingSocket);
     if (!this.messagingSocket) {
+      console.log("sendMessage-????--return");
+
       return;
     }
     const message = {

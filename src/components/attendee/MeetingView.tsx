@@ -16,7 +16,17 @@ const MeetingView = () => (
         <VideoTileProvider>
           <LiveAttendeesProvider>
             <ContentShareProvider>
-              <Attendee controls={<Controls allowLeave />} fullScreenVideo />
+              <Attendee
+                controls={
+                  <Controls
+                    allowAudioControls
+                    allowVideoControls
+                    allowLeave
+                    allowEnd
+                  />
+                }
+                fullScreenVideo
+              />
             </ContentShareProvider>
           </LiveAttendeesProvider>
         </VideoTileProvider>
