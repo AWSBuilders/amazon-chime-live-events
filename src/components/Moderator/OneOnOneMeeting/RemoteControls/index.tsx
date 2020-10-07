@@ -91,30 +91,7 @@ export default function RemoteControls() {
             }}
           />
         </Tooltip>
-        <Tooltip
-          tooltip={translate(
-            videoAttendees.has(attendeeId)
-              ? 'RemoteControls.disableVideo'
-              : 'RemoteControls.enableVideo'
-          )}
-        >
-          <IconButton
-            className={cx('button')}
-            onClick={() => {
-              const type = videoAttendees.has(attendeeId)
-                ? MessageType.DISABLE_VIDEO
-                : MessageType.ENABLE_VIDEO;
-              chime?.sendMessage(type, {
-                targetAttendeeId: attendeeId,
-              });
-            }}
-            icon={
-              videoAttendees.has(attendeeId)
-                ? 'fas fa-video'
-                : 'fas fa-video-slash'
-            }
-          />
-        </Tooltip>
+
         <Tooltip
           tooltip={translate(
             muted
@@ -131,23 +108,6 @@ export default function RemoteControls() {
               });
             }}
             icon={muted ? 'fas fa-microphone-slash' : 'fas fa-microphone'}
-          />
-        </Tooltip>
-        <Tooltip tooltip={translate('RemoteControls.moveToHolding')}>
-          <IconButton
-            className={cx('button', 'success')}
-            onClick={() => {
-              dispatch({
-                type: Types.TRANSITIONING_ATTENDEE,
-                payload: attendeeId,
-              });
-              chime?.sendMessage(MessageType.TRANSFER_MEETING, {
-                targetAttendeeId: attendeeId,
-                liveEventAttendeeId: externalAttendeeId,
-                meetingId: talentMeetingService.talentMeeting?.id,
-              });
-            }}
-            icon='fas fa-check'
           />
         </Tooltip>
       </ButtonGroup>

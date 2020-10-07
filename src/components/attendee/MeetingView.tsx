@@ -5,31 +5,27 @@ import Controls from '../Controls';
 import MeetingStatusProvider from './MeetingStatusProvider';
 import RosterProvider from '../../providers/RosterProvider';
 import { ContentShareProvider } from '../../providers/ContentShareProvider';
-import { LiveAttendeesProvider } from '../../providers/LiveAttendeesProvider';
-import { VideoTileProvider } from '../../providers/VideoTileProvider';
+//import { LiveAttendeesProvider } from "../../providers/LiveAttendeesProvider";
+//import { VideoTileProvider } from "../../providers/VideoTileProvider";
 import { LocalTileProvider } from '../../providers/LocalTileProvider';
 
 const MeetingView = () => (
   <MeetingStatusProvider joinMuted>
     <RosterProvider>
       <LocalTileProvider>
-        <VideoTileProvider>
-          <LiveAttendeesProvider>
-            <ContentShareProvider>
-              <Attendee
-                controls={
-                  <Controls
-                    allowAudioControls
-                    allowVideoControls
-                    allowLeave
-                    allowEnd
-                  />
-                }
-                fullScreenVideo
+        <ContentShareProvider>
+          <Attendee
+            controls={
+              <Controls
+                allowAudioControls
+                allowVideoControls
+                allowLeave
+                allowEnd
               />
-            </ContentShareProvider>
-          </LiveAttendeesProvider>
-        </VideoTileProvider>
+            }
+            fullScreenVideo
+          />
+        </ContentShareProvider>
       </LocalTileProvider>
     </RosterProvider>
   </MeetingStatusProvider>

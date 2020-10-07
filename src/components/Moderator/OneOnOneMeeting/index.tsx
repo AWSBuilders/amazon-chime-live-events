@@ -13,6 +13,7 @@ import { LocalTileProvider } from '../../../providers/LocalTileProvider';
 
 import styles from "./OneOnOneMeeting.css";
 import Chat from "../../Chat";
+import { ContentShareProvider } from "../../../providers/ContentShareProvider";
 const cx = classNames.bind(styles);
 
 const OneOnOneMeeting: React.FC = () => {
@@ -26,18 +27,17 @@ const OneOnOneMeeting: React.FC = () => {
     >
       {meetingStatus === MeetingStatus.Succeeded && (
         <>
-          <LocalTileProvider>
-            <OneOnOneLocalControls />
-            <RemoteControls />
-            <AttendeeVideo />
-          </LocalTileProvider>
+          <ContentShareProvider>
+            <LocalTileProvider>
+              <OneOnOneLocalControls />
+              <RemoteControls />
+              <AttendeeVideo />
+              <Chat />
+            </LocalTileProvider>
+          </ContentShareProvider>
         </>
       )}
-      <div className={cx("chat")}>
-        chat~~~~~~~~~~
-        <Chat />
-        chat~~~~~~~~~~
-      </div>
+
       <AttendeeStatus />
     </div>
   );

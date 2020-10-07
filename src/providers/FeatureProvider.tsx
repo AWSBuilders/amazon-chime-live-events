@@ -21,12 +21,14 @@ export default function FeatureProvider({ children }: Props) {
     const params = new URLSearchParams(window.location.search);
 
     return {
-      hideRoster: !!params.get('hideRoster'),
-      hideQueue: !!params.get('hideQueue') || params.get('exp') === 'tier1',
-      straightToMeeting: !!params.get('straightToMeeting'),
+      hideRoster: !!params.get("hideRoster") || params.get("exp") === "imr",
+      hideQueue: !!params.get("hideQueue") || params.get("exp") === "tier1",
+      straightToMeeting: !!params.get("straightToMeeting"),
       minimalRoster:
-        !!params.get('minimalRoster') || params.get('exp') === 'tier1',
-      singleFeed: !!params.get('singleFeed') || params.get('exp') === 'tier1',
+        !!params.get("minimalRoster") ||
+        params.get("exp") === "tier1" ||
+        params.get("exp") === "imr",
+      singleFeed: !!params.get("singleFeed") || params.get("exp") === "tier1"
     };
   }, []);
 

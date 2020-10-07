@@ -36,7 +36,7 @@ export default function Controls(props: Props) {
 
   const chime: ChimeSdkWrapper | null = useContext(getChimeContext());
   const [muted, setMuted] = useState(false);
-  const [videoStatus, setVideoStatus] = useState(VideoStatus.Disabled);
+  const [videoStatus, setVideoStatus] = useState(VideoStatus.Enabled);
   const translate = useTranslate();
   const history = useHistory();
 
@@ -106,7 +106,7 @@ export default function Controls(props: Props) {
             onClick={async () => {
               // Adds a slight delay to close the tooltip before rendering the updated text in it
               await new Promise(resolve => setTimeout(resolve, 10));
-              console.debug('Current video status:', VideoStatus.Disabled);
+              console.log("Current video status:", VideoStatus.Disabled);
               if (videoStatus === VideoStatus.Disabled) {
                 setVideoStatus(VideoStatus.Loading);
                 try {
@@ -116,11 +116,8 @@ export default function Controls(props: Props) {
                   await chime?.chooseVideoInputDevice(
                     chime?.currentVideoInputDevice
                   );
-                  console.info('Starting local video.', chime?.audioVideo);
-                  console.info(
-                    'Current input:',
-                    chime?.currentVideoInputDevice
-                  );
+                  console.log("Starting local video.", chime?.audioVideo);
+                  console.log("Current input:", chime?.currentVideoInputDevice);
                   chime?.audioVideo?.startLocalVideoTile();
                   setVideoStatus(VideoStatus.Enabled);
                 } catch (error) {

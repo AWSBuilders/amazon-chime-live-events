@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 
-import { LiveEventMessagesProvider } from '../../providers/LiveEventMessagesProvider';
-import TalentMeetingProvider from '../../providers/TalentMeetingProvider';
-import LiveEvent from './LiveEventView/LiveEvent';
-import { Response } from '../../types/Response';
-import Informational from '../Informational';
-import VettingView from './VettingView';
-import ControlsBar from '../ControlsBar';
-import GridLayout from './GridLayout';
-import useTranslate from '../../hooks/useTranslate';
+import { LiveEventMessagesProvider } from "../../providers/LiveEventMessagesProvider";
+import TalentMeetingProvider from "../../providers/TalentMeetingProvider";
+//import LiveEvent from "./LiveEventView/LiveEvent";
+import { Response } from "../../types/Response";
+import Informational from "../Informational";
+import VettingView from "./VettingView";
+import ControlsBar from "../ControlsBar";
+import GridLayout from "./GridLayout";
+import useTranslate from "../../hooks/useTranslate";
 
 import styles from './Moderation.css';
 import AttendeeStatusProvider from '../../providers/AttendeeStatusProvider';
@@ -43,7 +43,7 @@ const Moderation: React.FC = () => {
                 </Informational>
               </div>
             ) : (
-              <LiveEvent />
+              <div />
             )}
             <VettingView />
             <ControlsBar />

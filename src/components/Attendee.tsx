@@ -25,7 +25,7 @@ import { LiveRosterProvider } from './LiveRosterProvider';
 import styles from "./Attendee.css";
 import ContentShare from "./ContentShare";
 import { useContentShareState } from "../providers/ContentShareProvider";
-import { useLocalTileApi } from "../providers/LocalTileProvider";
+//import { useLocalTileApi } from "../providers/LocalTileProvider";
 import Chat from "./Chat";
 //import Controls from "./Controls";
 const cx = classNames.bind(styles);
@@ -57,7 +57,7 @@ export default function Attendee({
   const translate = useTranslate();
   const notifDispatch = useNotificationDispatch();
   const { isLocalUserSharing, isLocalShareLoading } = useContentShareState();
-  const { stopLocalVideoTile } = useLocalTileApi();
+  //const { stopLocalVideoTile } = useLocalTileApi();
 
   const onTryAgain = () => {
     window.location.reload();
@@ -86,7 +86,7 @@ export default function Attendee({
       {console.log("0Attendee---isLocalShareLoading", isLocalShareLoading)}
       {meetingStatus === MeetingStatus.Succeeded && (
         <>
-          <div className={cx("left")}>
+          <div className={cx("remotevideo")}>
             <div
               className={cx("attendeeRemoteMedia", {
                 fullScreenVideo
@@ -99,6 +99,17 @@ export default function Attendee({
               ) : (
                 <AttendeeVideoGroup showLocalTile={false} />
               )}
+            </div>
+
+            {isLocalUserSharing || showAttendeeScreen ? (
+              <div className={cx("contentshare")}>
+                <ContentShare />
+              </div>
+            ) : (
+              <div></div>
+            )}
+            <div className={cx("localControls")}>
+              <div className={cx("controls")}>{controls}</div>
             </div>
 
             {showSelfView &&
@@ -126,21 +137,11 @@ export default function Attendee({
                   <LocalVideo />
                 </div>
               ))}
-            {isLocalUserSharing || showAttendeeScreen ? (
-              <div>
-                {stopLocalVideoTile()}
-                <ContentShare />
-              </div>
-            ) : (
-              <></>
-            )}
-            <div className={cx("localControls")}>
-              <div className={cx("controls")}>{controls}</div>
-            </div>
-            <div className={cx("right")}>
-              <div className={cx("chat")}>
-                <Chat />
-              </div>
+          </div>
+
+          <div className={cx("chatting")}>
+            <div className={cx("chat")}>
+              <Chat />
             </div>
           </div>
         </>

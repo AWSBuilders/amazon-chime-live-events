@@ -1,8 +1,8 @@
 .localVideo {
   position: relative;
   display: none;
-  width: 17vw;
-  height: auto;
+  width: 130px;
+  height: 124px;
   border-radius: var(--border-radius);
   overflow: hidden;
 }
