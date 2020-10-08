@@ -1,10 +1,10 @@
 .remote-controls {
   position: absolute;
-  bottom: 1.5%;
+  top: 1.5%;
   right: 50%;
   transform: translateX(50%);
   display: flex;
-  padding: .75rem;
+  padding: 0.75rem;
   z-index: 100;
   animation: fade-in 250ms ease forwards;
   opacity: 0;

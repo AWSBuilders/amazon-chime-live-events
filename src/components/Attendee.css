@@ -12,7 +12,9 @@
 }
 
 .contentshare {
-  background: #808080;
+  border-top: 1px solid #222;
+  flex: 6;
+  min-height: 400px;
 }
 .remotevideo {
   display: flex;

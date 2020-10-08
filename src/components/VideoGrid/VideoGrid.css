@@ -33,7 +33,7 @@
 }
 
 .grid--size-1.r36by9 {
-  grid-template: 1fr / 1fr 1fr;
+  grid-template: 1fr / 1fr 4fr;
 }
 
 /* 2 Tiles */

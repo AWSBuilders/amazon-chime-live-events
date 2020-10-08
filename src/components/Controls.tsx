@@ -155,11 +155,7 @@ export default function Controls(props: Props) {
           />
         </Tooltip>
       )}
-      {allowLeave && (
-        <Tooltip tooltip={translate("Controls.leaveMeetingTooltip")}>
-          <ContentShareButton withPulse />
-        </Tooltip>
-      )}
+      {allowLeave && <ContentShareButton withPulse />}
     </ButtonGroup>
   );
 }

@@ -6,7 +6,7 @@
 }
 
 .wrapper--split .videos {
-  min-width: 20%;
+  width: auto;
 }
 
 .contentShare {
@@ -15,7 +15,7 @@
 
 .wrapper--theater .contentShare {
   padding: 1rem;
-  width: 100%;
+  width: auto;
 }
 
 .wrapper--theater .contentShare video {
