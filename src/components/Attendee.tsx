@@ -56,7 +56,12 @@ export default function Attendee({
   const { isLocalUserLive } = useLiveAttendees();
   const translate = useTranslate();
   const notifDispatch = useNotificationDispatch();
-  const { isLocalUserSharing, isLocalShareLoading } = useContentShareState();
+  const {
+    isSomeoneSharing,
+    isLocalUserSharing,
+    isLocalShareLoading
+  } = useContentShareState();
+
   //const { stopLocalVideoTile } = useLocalTileApi();
 
   const onTryAgain = () => {
@@ -101,7 +106,7 @@ export default function Attendee({
               )}
             </div>
 
-            {isLocalUserSharing || showAttendeeScreen ? (
+            {isSomeoneSharing || isLocalUserSharing || showAttendeeScreen ? (
               <div className={cx("contentshare")}>
                 <ContentShare />
               </div>
