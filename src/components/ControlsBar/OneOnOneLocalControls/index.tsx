@@ -5,8 +5,8 @@ import ButtonGroup from '../../ButtonGroup';
 import Portal from '../../Portal';
 import MuteButton from '../MuteButton';
 import VideoButton from '../VideoButton';
-import VolumeButton from '../VolumeButton';
-import { MeetingAudio } from '../../../providers/MetaStateProvider/state';
+//import VolumeButton from "../VolumeButton";
+//import { MeetingAudio } from "../../../providers/MetaStateProvider/state";
 import ControlLabel from '../ControlLabel';
 import { ONE_ON_ONE_CONTROL_PORTAL } from '..';
 import useTranslate from '../../../hooks/useTranslate';
@@ -24,7 +24,7 @@ const LocalUserControls: React.FC = () => {
       <ButtonGroup className={cx('one-on-one')} stacked>
         <MuteButton />
         <VideoButton />
-        <VolumeButton source={MeetingAudio.ONE_ON_ONE} />
+
         <ContentShareButton withPulse />
       </ButtonGroup>
     </Portal>

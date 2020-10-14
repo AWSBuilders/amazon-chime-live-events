@@ -77,10 +77,19 @@ export default function OneOnOneMeetingStatusProvider(props: Props) {
       externalAttendeeId?: string | null | undefined
     ) => {
       const self = chime?.configuration?.credentials?.attendeeId;
+
+      console.log("attendeeID =", attendeeID);
+      console.log("self =", self);
+
+      if (attendeeID.includes("#")) {
+        console.log("리턴");
+
+        return;
+      }
       if (attendeeID === self) {
         return;
       }
-      console.log(`Attendee ${attendeeID} changed presence to ${present}.`);
+      console.log(`1:1 Attendee ${attendeeID} changed presence to ${present}.`);
       console.log(`External Attendee Id: ${externalAttendeeId}`);
       if (!present) {
         console.log(`Other attendee left; ending meeting.`);

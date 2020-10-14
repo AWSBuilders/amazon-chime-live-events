@@ -106,7 +106,7 @@ export default function Controls(props: Props) {
             onClick={async () => {
               // Adds a slight delay to close the tooltip before rendering the updated text in it
               await new Promise(resolve => setTimeout(resolve, 10));
-              console.log("Current video status:", VideoStatus.Disabled);
+              console.log("Current video status:", VideoStatus);
               if (videoStatus === VideoStatus.Disabled) {
                 setVideoStatus(VideoStatus.Loading);
                 try {
@@ -138,24 +138,23 @@ export default function Controls(props: Props) {
           />
         </Tooltip>
       )}
+
+      {allowLeave && <ContentShareButton withPulse />}
+
       {allowEnd && (
         <Tooltip tooltip={translate('Controls.endMeetingTooltip')}>
           <IconButton
             variant='danger'
             onClick={() => {
-              if (onEnd) {
-                onEnd();
-              } else {
-                chime?.disableVideoAndLeaveRoom(true).then(() => {
-                  history.push(routes.HOME);
-                });
-              }
+              const endMeeting = true;
+              chime?.disableVideoAndLeaveRoom(endMeeting).then(() => {
+                history.push(`${routes.HOME}`);
+              });
             }}
             icon={icons.CLOSE}
           />
         </Tooltip>
       )}
-      {allowLeave && <ContentShareButton withPulse />}
     </ButtonGroup>
   );
 }

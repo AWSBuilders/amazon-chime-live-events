@@ -108,7 +108,7 @@ export default function MeetingStatusProvider(props: Props): JSX.Element {
       });
       chime?.audioVideo?.removeObserver(mainObserver);
       chime?.dropAudio().then(() => {
-        chime?.disableVideoAndLeaveRoom(false);
+        chime?.disableVideoAndLeaveRoom(true);
       });
     };
   }, [meetingId]);
