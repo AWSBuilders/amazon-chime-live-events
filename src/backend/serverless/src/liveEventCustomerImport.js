@@ -1,14 +1,14 @@
-const otpGenerator = require('otp-generator');
-const short = require('short-uuid');
-const AWS = require('aws-sdk');
-const csv = require('csvtojson');
+const otpGenerator = require("otp-generator");
+const short = require("short-uuid");
+const AWS = require("aws-sdk");
+const csv = require("csvtojson");
 
-const { makeResponse } = require('./cors');
-const { generateAccessKey } = require('./accessKeysDao');
-const { AttendeeType, saveAttendee } = require('./eventAttendeesDao');
+const { makeResponse } = require("./cors");
+const { generateAccessKey } = require("./accessKeysDao");
+const { AttendeeType, saveAttendee } = require("./eventAttendeesDao");
 
 AWS.config.update({
-  region: process.env.AWS_REGION,
+  region: process.env.AWS_REGION
 });
 
 const ddb = new AWS.DynamoDB.DocumentClient();
@@ -19,7 +19,7 @@ const {
   EVENT_PREFIX,
   USE_STRICT_ACCESS_KEYS,
   DOMAIN_PREFIX,
-  CUSTOMER_IMPORT_BUCKET,
+  CUSTOMER_IMPORT_BUCKET
 } = process.env;
 
 /*
@@ -55,7 +55,7 @@ exports.createEvent = async event => {
 
   // Generate new event id
   const shortIdForEvent = otpGenerator.generate(4, { specialChars: false });
-  const eventId = EVENT_PREFIX + '-' + shortIdForEvent;
+  const eventId = EVENT_PREFIX + "-" + shortIdForEvent;
 
   // console.log(attendees);
   // console.log(moderators);
@@ -70,16 +70,16 @@ exports.createEvent = async event => {
     eventId
   );
 
-  const slash = DOMAIN_PREFIX.endsWith('/') ? '' : '/';
+  const slash = DOMAIN_PREFIX.endsWith("/") ? "" : "/";
   const talentUrl =
     DOMAIN_PREFIX +
     slash +
-    'talent' +
-    '?aId=' +
+    "talent" +
+    "?aId=" +
     talentId +
-    '&eId=' +
+    "&eId=" +
     eventId +
-    '&name=' +
+    "&name=" +
     encodeURIComponent(talent.full_name);
 
   talent.eventId = eventId;
@@ -92,14 +92,14 @@ exports.createEvent = async event => {
     TableName: LIVE_EVENTS_TABLE,
     Item: {
       LiveEventId: eventId,
-      talentMeetingId: talentId,
-    },
+      talentMeetingId: talentId
+    }
   };
 
   await ddb.put(params).promise();
 
   // Will create broadcast attendee with same access rights as TALENT.
-  const broadcaster = { full_name: '‹Broadcaster›' };
+  const broadcaster = { full_name: "‹Broadcaster›" };
   const broadcasterAttendeeId = short().uuid();
   const broadcastAccessKey = await generateAccessKey(
     99999,
@@ -116,10 +116,10 @@ exports.createEvent = async event => {
 
   await saveAttendees(attendees, moderators, talent, broadcaster, eventId);
 
-  await saveJSONtoS3(moderators, bucket, eventId + '_event_moderators.json');
-  await saveJSONtoS3(attendees, bucket, eventId + '_event_attendees.json');
-  await saveJSONtoS3(talent, bucket, eventId + '_event_talents.json');
-  await saveJSONtoS3(broadcaster, bucket, eventId + '_event_broadcaster.json');
+  await saveJSONtoS3(moderators, bucket, eventId + "_event_moderators.json");
+  await saveJSONtoS3(attendees, bucket, eventId + "_event_attendees.json");
+  await saveJSONtoS3(talent, bucket, eventId + "_event_talents.json");
+  await saveJSONtoS3(broadcaster, bucket, eventId + "_event_broadcaster.json");
 
   return makeResponse(
     200,
@@ -127,7 +127,7 @@ exports.createEvent = async event => {
       EventId: eventId,
       TalentURL: talentUrl,
       TalentAccessKey: talentAccessKey,
-      BroadcasterURL: broadcaster.access_url,
+      BroadcasterURL: broadcaster.access_url
     })
   );
 };
@@ -160,16 +160,17 @@ const saveAttendees = async (
   for (const moderator of moderators) {
     const attendeeId = short().uuid();
     // http://localhost:9001/moderator?aId=Mod1234567&eId=townhall56745&name=Moderator#/
-    const slash = DOMAIN_PREFIX.endsWith('/') ? '' : '/';
+    const slash = DOMAIN_PREFIX.endsWith("/") ? "" : "/";
     const accessUrl =
       DOMAIN_PREFIX +
       slash +
-      'moderator' +
-      '?aId=' +
+      "moderator" +
+      "?exp=imr" +
+      "&aId=" +
       attendeeId +
-      '&eId=' +
+      "&eId=" +
       eventId +
-      '&name=' +
+      "&name=" +
       encodeURIComponent(moderator.full_name);
 
     moderator.eventId = eventId;
@@ -191,16 +192,16 @@ const saveAttendees = async (
   for (const attendee of attendees) {
     const attendeeId = short().uuid();
     // http://localhost:9001/attendee?aId=Mod1234567&eId=townhall56745&name=Moderator#/
-    const slash = DOMAIN_PREFIX.endsWith('/') ? '' : '/';
+    const slash = DOMAIN_PREFIX.endsWith("/") ? "" : "/";
     const accessUrl =
       DOMAIN_PREFIX +
       slash +
-      'attendee' +
-      '?aId=' +
+      "attendee" +
+      "?aId=" +
       attendeeId +
-      '&eId=' +
+      "&eId=" +
       eventId +
-      '&name=' +
+      "&name=" +
       encodeURIComponent(attendee.full_name);
 
     attendee.eventId = eventId;
@@ -215,7 +216,7 @@ const saveJSONtoS3 = async (data, bucket, path) => {
   const params = {
     Bucket: bucket, // your bucket name,
     Key: path, // path to the object
-    Body: JSON.stringify(data),
+    Body: JSON.stringify(data)
   };
 
   await s3.putObject(params).promise();
