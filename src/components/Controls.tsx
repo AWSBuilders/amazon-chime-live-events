@@ -13,6 +13,7 @@ import Tooltip from './Tooltip';
 import icons from '../constants/icons';
 import useTranslate from '../hooks/useTranslate';
 import ContentShareButton from "../components/ControlsBar/ContentShareButton";
+//const { isLocalUserSharing } = useContentShareState();
 
 import styles from './Controls.css';
 const cx = classNames.bind(styles);
@@ -30,13 +31,13 @@ export default function Controls(props: Props) {
     allowAudioControls,
     allowVideoControls,
     allowLeave,
-    allowEnd,
-    onEnd,
+    allowEnd
+    //   onEnd
   } = props;
 
   const chime: ChimeSdkWrapper | null = useContext(getChimeContext());
   const [muted, setMuted] = useState(false);
-  const [videoStatus, setVideoStatus] = useState(VideoStatus.Enabled);
+  const [videoStatus, setVideoStatus] = useState(VideoStatus.Disabled);
   const translate = useTranslate();
   const history = useHistory();
 

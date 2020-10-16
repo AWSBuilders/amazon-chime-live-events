@@ -118,7 +118,7 @@ export default function Attendee({
             </div>
 
             {showSelfView &&
-              !isLocalUserSharing &&
+              //!isLocalUserSharing &&
               (isLiveEvent ? (
                 <LiveIndicator
                   position="bottom-right"

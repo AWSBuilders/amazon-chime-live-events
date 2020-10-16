@@ -502,9 +502,17 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
         let name;
         if (this.roster[targetAttendeeId]) {
           name = this.roster[targetAttendeeId].name;
+          if (name === "Moderator") {
+            name = "Supporter";
+          }
         }
 
         console.log("joinRoomMessaging attendeeId???= ", targetAttendeeId);
+        console.log(
+          "joinRoomMessaging this.roster[attendeeId]???= ",
+          this.roster[targetAttendeeId]
+        );
+
         this.publishMessageUpdate({
           type: data.type,
           payload: data.payload,

@@ -90,7 +90,7 @@ export default {
   "HandForm.nameField": "이름",
   "HandForm.questionField": "질문",
   "HandForm.questionHelpText":
-    "Write down the question and raise your hand. Supporters will answer your questions.",
+    "질문과 함께 손을 들어주세요, 서포터가 당신의 질문에 응답할 예정입니다.",
 
   "LiveEventView.liveMeetingTitle": "Live Meeting",
   "LiveEventView.holdingRoomTitle": "Live meeting",
@@ -116,7 +116,7 @@ export default {
     "브라우저에서 카메라와 마이크를 사용할 수있는 권한을 요청합니다.",
   "DressingRoom.permissionPrompt2": "사용하려는 장치를 선택하십시오.",
   "DressingRoom.permissionPrompt3":
-    "질문이 나온다면 “이 결정 기억”을 선택합니다.",
+    "질문이 나온다면 “Remember this decision”을 선택합니다.",
   "DressingRoom.permissionPrompt4": "“Allow”를 누르세요",
   "DressingRoom.readyButton": "준비완료",
   "DressingRoom.inputAudioLabel": "Audio input source",
