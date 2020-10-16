@@ -1,17 +1,26 @@
 import React, { ReactNode } from 'react';
 import { IntlProvider } from 'react-intl';
 
-import enUS from '../i18n/en-US';
+import enUS from "../i18n/en-US";
+import koKR from "../i18n/ko-KR";
 
 const DEFAULT_LOCALE = 'en-US';
 
 const messages = {
-  [DEFAULT_LOCALE]: enUS
+  enUS,
+  koKR
 };
 
 type Props = {
   children: ReactNode;
 };
+
+let msg = messages.koKR;
+if (navigator.language === "ko-KR") {
+  msg = messages.koKR;
+} else {
+  msg = messages.enUS;
+}
 
 export default function I18nProvider(props: Props) {
   const { children } = props;
@@ -20,8 +29,8 @@ export default function I18nProvider(props: Props) {
       locale={
         (navigator.languages && navigator.languages[0]) || navigator.language
       }
-      defaultLocale={DEFAULT_LOCALE}
-      messages={messages[DEFAULT_LOCALE]}
+      defaultLocale={navigator.language}
+      messages={msg}
     >
       {children}
     </IntlProvider>
