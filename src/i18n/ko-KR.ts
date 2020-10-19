@@ -14,7 +14,7 @@ export default {
   "Controls.muteTooltip": `내 마이크 끄기`,
   "Controls.turnOnVideoTooltip": `내 비디오 켜기`,
   "Controls.turnOffVideoTooltip": `내 비디오 끄기`,
-  "Controls.endMeetingTooltip": `미팅 종료`,
+  "Controls.endMeetingTooltip": `1:1 미팅 종료`,
   "Controls.leaveMeetingTooltip": `미팅 종료`,
   "Controls.micMutedInScreenViewMode": `마이크 끄기`,
   "Controls.muteLiveMic": "Mute my live event mic",
@@ -83,7 +83,8 @@ export default {
 
   "RaiseHand.askAQuestion": "질문이 있으시면 손을 들어주세요",
   "RaiseHand.yourHandIsRaised": "손을 들었습니다. 잠시만 기다려주세요",
-  "RaiseHand.helpText": "서포터가 당신의 질문에 응답할 예정입니다.",
+  "RaiseHand.helpText":
+    "서포터가 당신의 질문에 응답할 예정입니다. 질문 하신 분이 많을 경우 대기시간이 오래 걸릴 수 있습니다. ",
 
   "HandForm.yourHandIsRaised": "당신은 이미 손을 들었습니다.",
   "HandForm.raiseYourHand": "손들고 질문하기",
@@ -98,7 +99,7 @@ export default {
   "LiveEventView.errorJoiningTalentMeeting":
     "There was an error trying to join the talent meeting.",
 
-  "HandRaiseFeed.queuedViewersTitle": "큐에 들어가 있는 참석자 명단",
+  "HandRaiseFeed.queuedViewersTitle": "내 큐에 들어가 있는 참석자 명단",
   "HandRaiseFeed.raisedHandsTitle": "손들고 대기하는 참석자 명단",
 
   "FeedList.anonymousName": "Anonymous",

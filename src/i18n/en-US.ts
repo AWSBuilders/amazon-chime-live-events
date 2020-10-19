@@ -14,7 +14,7 @@ export default {
   "Controls.muteTooltip": `Mute myself`,
   "Controls.turnOnVideoTooltip": `Turn on my video`,
   "Controls.turnOffVideoTooltip": `Turn off my video`,
-  "Controls.endMeetingTooltip": `End meeting`,
+  "Controls.endMeetingTooltip": `End 1:1 meeting`,
   "Controls.leaveMeetingTooltip": `Leave meeting`,
   "Controls.micMutedInScreenViewMode": `Mic muted`,
   "Controls.muteLiveMic": "Mute my live event mic",
@@ -93,7 +93,7 @@ export default {
   "HandForm.nameField": "Name",
   "HandForm.questionField": "Your question",
   "HandForm.questionHelpText":
-    "Your question will be submitted to the supporters. ",
+    "Your question will be submitted to the supporters. If there are many people who ask questions, it may take a long time.",
 
   "LiveEventView.liveMeetingTitle": "Live Meeting",
   "LiveEventView.holdingRoomTitle": "Live meeting",

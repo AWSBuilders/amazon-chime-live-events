@@ -31,8 +31,8 @@ export default function Controls(props: Props) {
     allowAudioControls,
     allowVideoControls,
     allowLeave,
-    allowEnd
-    //   onEnd
+    allowEnd,
+    onEnd
   } = props;
 
   const chime: ChimeSdkWrapper | null = useContext(getChimeContext());
@@ -147,10 +147,13 @@ export default function Controls(props: Props) {
           <IconButton
             variant='danger'
             onClick={() => {
-              const endMeeting = true;
-              chime?.disableVideoAndLeaveRoom(endMeeting).then(() => {
-                history.push(`${routes.HOME}`);
-              });
+              if (onEnd) {
+                onEnd();
+              } else {
+                chime?.disableVideoAndLeaveRoom(true).then(() => {
+                  history.push(routes.HOME);
+                });
+              }
             }}
             icon={icons.CLOSE}
           />
