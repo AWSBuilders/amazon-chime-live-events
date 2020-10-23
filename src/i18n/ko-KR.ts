@@ -171,7 +171,7 @@ export default {
   "Buttons.Accept": "Accept",
   "Buttons.Decline": "Decline",
 
-  "Attendee.meetingJoinFailed": "Failed to join meeting.",
+  "Attendee.meetingJoinFailed": "미팅참석에 실패했습니다. 다시 시도해 주세요",
   "Attendee.youAreLive": "You are live",
   "Attendee.youAreNotLive": "You are not live",
   "Attendee.notLiveHelp":

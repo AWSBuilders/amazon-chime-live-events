@@ -19,7 +19,7 @@ import ButtonGroup from '../../../ButtonGroup';
 import Controls from '../../../Controls';
 import Tooltip from '../../../Tooltip';
 import useTranslate from '../../../../hooks/useTranslate';
-import { useTalentMeetingContext } from '../../../../providers/TalentMeetingProvider';
+//import { useTalentMeetingContext } from "../../../../providers/TalentMeetingProvider";
 
 import styles from './RemoteControls.css';
 const cx = classNames.bind(styles);
@@ -27,7 +27,7 @@ const cx = classNames.bind(styles);
 export default function RemoteControls() {
   const chime: ChimeSdkWrapper | null = useContext(getChimeContext());
   const { meetingStatus } = useContext(getMeetingStatusContext());
-  const talentMeetingService = useTalentMeetingContext();
+  //const talentMeetingService = useTalentMeetingContext();
   const rosterAttendee = useContext(getOneOnOneAttendeeContext());
   const translate = useTranslate();
   const attendeeId = rosterAttendee?.id;
@@ -73,8 +73,9 @@ export default function RemoteControls() {
       chime?.audioVideo?.removeObserver(observer);
     };
   }, [meetingStatus]);
-
-  if (attendeeId && externalAttendeeId) {
+  console.log("??? attendeeId = ", attendeeId);
+  console.log("??? externalAttendeeId = ", externalAttendeeId);
+  //if (attendeeId && externalAttendeeId)
     return (
       <ButtonGroup key={attendeeId} className={cx('remote-controls')}>
         <Tooltip

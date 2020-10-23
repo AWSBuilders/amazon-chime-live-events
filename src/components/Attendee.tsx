@@ -84,7 +84,7 @@ export default function Attendee({
           errorMessage={translate('Attendee.meetingJoinFailed')}
         />
       )}
-      {console.log("0Attendee---isLiveEvent", isLiveEvent)}
+      {console.log("0Attendee---isSomeoneSharing", isSomeoneSharing)}
       {console.log("0Attendee---showLiveView", showLiveView)}
       {console.log("0Attendee---showSelfView", showSelfView)}
       {console.log("0Attendee---isLocalUserSharing", isLocalUserSharing)}

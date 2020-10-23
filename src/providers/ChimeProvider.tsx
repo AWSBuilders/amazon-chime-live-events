@@ -11,29 +11,29 @@ import {
   LogLevel,
   MeetingSession,
   MeetingSessionConfiguration,
-  ReconnectingPromisedWebSocket,
-} from 'amazon-chime-sdk-js';
-import React, { ReactNode, useContext, useEffect, useMemo } from 'react';
+  ReconnectingPromisedWebSocket
+} from "amazon-chime-sdk-js";
+import React, { ReactNode, useContext, useEffect, useMemo } from "react";
 
-import { useIntl, IntlShape } from 'react-intl';
-import getChimeContext from '../context/getChimeContext';
-import DeviceType from '../types/DeviceType';
-import FullDeviceInfoType from '../types/FullDeviceInfoType';
-import { MessagePayload, Message, MessageType } from '../types/MeetingMessage';
-import RegionType from '../types/RegionType';
-import RosterType from '../types/RosterType';
-import { jsonOrBail } from '../utils/ResponseUtils';
-import { getBaseURL, getMessagingWSSURL } from '../utils/configuredURLs';
-import { RequestHeadersType } from '../types/RequestHeadersType';
-import getCredentialsContext from '../context/getCredentialsContext';
-import getLiveEventParticipantContext from '../context/getLiveEventParticipantContext';
+import { useIntl, IntlShape } from "react-intl";
+import getChimeContext from "../context/getChimeContext";
+import DeviceType from "../types/DeviceType";
+import FullDeviceInfoType from "../types/FullDeviceInfoType";
+import { MessagePayload, Message, MessageType } from "../types/MeetingMessage";
+import RegionType from "../types/RegionType";
+import RosterType from "../types/RosterType";
+import { jsonOrBail } from "../utils/ResponseUtils";
+import { getBaseURL, getMessagingWSSURL } from "../utils/configuredURLs";
+import { RequestHeadersType } from "../types/RequestHeadersType";
+import getCredentialsContext from "../context/getCredentialsContext";
+import getLiveEventParticipantContext from "../context/getLiveEventParticipantContext";
 
 export class ChimeSdkWrapper implements DeviceChangeObserver {
   intl: IntlShape;
 
   private static WEB_SOCKET_TIMEOUT_MS = 10000;
 
-  logger: ConsoleLogger = new ConsoleLogger('SDK', LogLevel.WARN);
+  logger: ConsoleLogger = new ConsoleLogger("SDK", LogLevel.WARN);
 
   meetingSession: MeetingSession | null = null;
 
@@ -48,20 +48,20 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
   region: string | null = null;
 
   supportedChimeRegions: RegionType[] = [
-    { label: 'United States (N. Virginia)', value: 'us-east-1' },
-    { label: 'Japan (Tokyo)', value: 'ap-northeast-1' },
-    { label: 'Singapore', value: 'ap-southeast-1' },
-    { label: 'Australia (Sydney)', value: 'ap-southeast-2' },
-    { label: 'Canada', value: 'ca-central-1' },
-    { label: 'Germany (Frankfurt)', value: 'eu-central-1' },
-    { label: 'Sweden (Stockholm)', value: 'eu-north-1' },
-    { label: 'Ireland', value: 'eu-west-1' },
-    { label: 'United Kingdom (London)', value: 'eu-west-2' },
-    { label: 'France (Paris)', value: 'eu-west-3' },
-    { label: 'Brazil (São Paulo)', value: 'sa-east-1' },
-    { label: 'United States (Ohio)', value: 'us-east-2' },
-    { label: 'United States (N. California)', value: 'us-west-1' },
-    { label: 'United States (Oregon)', value: 'us-west-2' },
+    { label: "United States (N. Virginia)", value: "us-east-1" },
+    { label: "Japan (Tokyo)", value: "ap-northeast-1" },
+    { label: "Singapore", value: "ap-southeast-1" },
+    { label: "Australia (Sydney)", value: "ap-southeast-2" },
+    { label: "Canada", value: "ca-central-1" },
+    { label: "Germany (Frankfurt)", value: "eu-central-1" },
+    { label: "Sweden (Stockholm)", value: "eu-north-1" },
+    { label: "Ireland", value: "eu-west-1" },
+    { label: "United Kingdom (London)", value: "eu-west-2" },
+    { label: "France (Paris)", value: "eu-west-3" },
+    { label: "Brazil (São Paulo)", value: "sa-east-1" },
+    { label: "United States (Ohio)", value: "us-east-2" },
+    { label: "United States (N. California)", value: "us-west-1" },
+    { label: "United States (Oregon)", value: "us-west-2" }
   ];
 
   currentAudioInputDevice: DeviceType | null = null;
@@ -104,22 +104,25 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
   }
 
   private stopWsStabilizer = () => {
+    console.log("xmrrh - stopWsStabilizer");
     if (!this.wsStabilizer) {
-      console.log('No active Websocket to stop!');
+      console.log("No active Websocket to stop!");
     }
     clearInterval(this.wsStabilizer);
   };
 
   private startWsStabilizer = () => {
+    console.log("xmrrh - startWsStabilizer");
+
     const seconds = 1000 * 60;
     const pingMessage = {
-      message: 'ping',
+      message: "ping"
     };
     this.wsStabilizer = setInterval(() => {
       try {
         this.messagingSocket?.send(JSON.stringify(pingMessage));
       } catch (error) {
-        console.error('Error sending ping message.');
+        console.error("Error sending ping message.");
         this.stopWsStabilizer();
         this.logError(error);
       }
@@ -128,11 +131,13 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
 
   extractJSON = (response: Response): Promise<any> => {
     return jsonOrBail(response, () =>
-      this.intl.formatMessage({ id: 'ChimeProvider.serverError' })
+      this.intl.formatMessage({ id: "ChimeProvider.serverError" })
     );
   };
 
   initializeSdkWrapper = async () => {
+    console.log("xmrrh - initializeSdkWrapper");
+
     this.meetingSession = null;
     this.audioVideo = null;
     this.deviceController = null;
@@ -159,9 +164,11 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
    */
   lookupClosestChimeRegion = async (): Promise<RegionType> => {
     let region: string;
+    console.log("xmrrh - lookupClosestChimeRegion");
+    s;
     try {
       const response = await fetch(`https://l.chime.aws`, {
-        method: 'GET',
+        method: "GET"
       });
       const json = await this.extractJSON(response);
       region = json.region;
@@ -199,8 +206,8 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
         name
       )}&region=${encodeURIComponent(region)}`,
       {
-        method: 'POST',
-        headers: this.getRequestHeaders(),
+        method: "POST",
+        headers: this.getRequestHeaders()
       }
     );
 
@@ -215,7 +222,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
     if (!JoinInfo) {
       throw new Error(
         this.intl.formatMessage({
-          id: 'ChimeProvider.meetingDoesNotExist',
+          id: "ChimeProvider.meetingDoesNotExist"
         })
       );
     }
@@ -252,21 +259,21 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
     this.audioInputDevices = audioInputs.map(
       (mediaDeviceInfo: MediaDeviceInfo) => ({
         label: mediaDeviceInfo.label,
-        value: mediaDeviceInfo.deviceId,
+        value: mediaDeviceInfo.deviceId
       })
     );
 
     this.audioOutputDevices = audioOutputs.map(
       (mediaDeviceInfo: MediaDeviceInfo) => ({
         label: mediaDeviceInfo.label,
-        value: mediaDeviceInfo.deviceId,
+        value: mediaDeviceInfo.deviceId
       })
     );
 
     this.videoInputDevices = videoInputs.map(
       (mediaDeviceInfo: MediaDeviceInfo) => ({
         label: mediaDeviceInfo.label,
-        value: mediaDeviceInfo.deviceId,
+        value: mediaDeviceInfo.deviceId
       })
     );
   };
@@ -319,9 +326,9 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
 
         if (!this.roster[presentAttendeeId]) {
           this.roster[presentAttendeeId] = {
-            name: '',
+            name: "",
             id: presentAttendeeId,
-            liveEventAttendeeId: externalUserId || '',
+            liveEventAttendeeId: externalUserId || ""
           };
         }
 
@@ -336,12 +343,12 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
               this.title
             )}&attendee=${encodeURIComponent(presentAttendeeId)}`,
             {
-              method: 'GET',
-              headers: this.getRequestHeaders(),
+              method: "GET",
+              headers: this.getRequestHeaders()
             }
           );
           const json = await this.extractJSON(response);
-          this.roster[presentAttendeeId].name = json.AttendeeInfo.Name || '';
+          this.roster[presentAttendeeId].name = json.AttendeeInfo.Name || "";
         }
         this.publishRosterUpdate();
       }
@@ -365,7 +372,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
     ) {
       this.currentAudioInputDevice = {
         label: audioInputs[0].label,
-        value: audioInputs[0].deviceId,
+        value: audioInputs[0].deviceId
       };
       await this.deviceController?.chooseAudioInputDevice(
         audioInputs[0].deviceId
@@ -379,7 +386,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
     ) {
       this.currentAudioOutputDevice = {
         label: audioOutputs[0].label,
-        value: audioOutputs[0].deviceId,
+        value: audioOutputs[0].deviceId
       };
       await this.deviceController?.chooseAudioOutputDevice(
         audioOutputs[0].deviceId
@@ -393,7 +400,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
     ) {
       this.currentVideoInputDevice = {
         label: videoInputs[0].label,
-        value: videoInputs[0].deviceId,
+        value: videoInputs[0].deviceId
       };
       await this.deviceController?.chooseVideoInputDevice(
         videoInputs[0].deviceId
@@ -410,7 +417,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
     }
 
     window.addEventListener(
-      'unhandledrejection',
+      "unhandledrejection",
       (event: PromiseRejectionEvent) => {
         this.logError(event.reason);
       }
@@ -446,7 +453,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
     this.messagingSocket = new ReconnectingPromisedWebSocket(
       messagingUrl,
       [],
-      'arraybuffer',
+      "arraybuffer",
       new DefaultPromisedWebSocketFactory(new DefaultDOMWebSocketFactory()),
       new FullJitterBackoff(1000, 0, 10000)
     );
@@ -463,29 +470,29 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
 
       if (this.configuration?.credentials?.attendeeId) {
         const payload: MessagePayload = {
-          targetAttendeeId: this.configuration?.credentials?.attendeeId,
+          targetAttendeeId: this.configuration?.credentials?.attendeeId
         };
         // Initiate WS stabilizer
         this.startWsStabilizer();
 
         this.sendMessage(MessageType.INIT_ATTENDEE, payload);
       } else {
-        this.logError(new Error('Missing configuration attributes'));
+        this.logError(new Error("Missing configuration attributes"));
       }
     });
 
     await this.messagingSocket.open(ChimeSdkWrapper.WEB_SOCKET_TIMEOUT_MS);
 
-    window.addEventListener('beforeunload', () => {
+    window.addEventListener("beforeunload", () => {
       console.log("joinRoomMessaging addEventListener-????-beforeunload");
       this.stopWsStabilizer();
-      console.debug('Closing messaging socket.');
-      this.messagingSocket?.close(500, 1000, 'Unload').then(() => {
-        console.debug('Closed messaging socket.');
+      console.debug("Closing messaging socket.");
+      this.messagingSocket?.close(500, 1000, "Unload").then(() => {
+        console.debug("Closed messaging socket.");
       });
     });
 
-    this.messagingSocket.addEventListener('message', (event: Event) => {
+    this.messagingSocket.addEventListener("message", (event: Event) => {
       try {
         const data = JSON.parse((event as MessageEvent).data);
 
@@ -495,7 +502,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
         );
 
         // Do not process ping messages.
-        if (data?.type === 'ping') return;
+        if (data?.type === "ping") return;
 
         const { targetAttendeeId } = data.payload;
 
@@ -517,7 +524,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
           type: data.type,
           payload: data.payload,
           timestampMs: Date.now(),
-          name,
+          name
         });
       } catch (error) {
         this.logError(error);
@@ -536,8 +543,8 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
       return;
     }
     const message = {
-      message: 'sendmessage',
-      data: JSON.stringify({ type, payload }),
+      message: "sendmessage",
+      data: JSON.stringify({ type, payload })
     };
     try {
       this.messagingSocket.send(JSON.stringify(message));
@@ -556,12 +563,12 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
       const url = `${base}live-events/${this.title}/kick`;
 
       await fetch(url, {
-        method: 'POST',
+        method: "POST",
         headers: this.getRequestHeaders(),
         body: JSON.stringify({
           attendeeId,
-          title: this.title,
-        }),
+          title: this.title
+        })
       });
     } catch (error) {
       this.logError(error);
@@ -580,7 +587,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
     try {
       await this.messagingSocket?.close(ChimeSdkWrapper.WEB_SOCKET_TIMEOUT_MS);
     } catch (error) {
-      console.error('Unable to send close message on messaging socket.');
+      console.error("Unable to send close message on messaging socket.");
       this.logError(error);
     }
 
@@ -588,8 +595,8 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
       if (end && this.title) {
         const base = getBaseURL();
         await fetch(`${base}end?title=${encodeURIComponent(this.title)}`, {
-          method: 'POST',
-          headers: this.getRequestHeaders(),
+          method: "POST",
+          headers: this.getRequestHeaders()
         });
       }
     } catch (error) {
@@ -653,32 +660,32 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
     }
 
     const av = this.audioVideo;
-    console.debug('Disabling video.');
+    console.debug("Disabling video.");
 
     try {
       await av.stopLocalVideoTile();
-      console.debug('Stopped tile');
+      console.debug("Stopped tile");
     } catch (error) {
-      console.error('Error stopping local video.');
+      console.error("Error stopping local video.");
       this.logError(error);
     }
 
     try {
       await av.chooseVideoInputDevice(null);
     } catch (error) {
-      console.error('Error discarding video input.');
+      console.error("Error discarding video input.");
       this.logError(error);
     }
 
     try {
       console.log(
-        `Leaving ${end ? 'and ending ' : ''} meeting with ID ${
+        `Leaving ${end ? "and ending " : ""} meeting with ID ${
           this.configuration?.meetingId
         }`
       );
       await this.leaveRoom(end);
     } catch (error) {
-      console.error('Error leaving room after stopping local video.');
+      console.error("Error leaving room after stopping local video.");
       this.logError(error);
     }
   };
@@ -701,7 +708,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
       }
       this.audioInputDevices.push({
         label: mediaDeviceInfo.label,
-        value: mediaDeviceInfo.deviceId,
+        value: mediaDeviceInfo.deviceId
       });
     });
     if (!hasCurrentDevice) {
@@ -723,7 +730,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
       }
       this.audioOutputDevices.push({
         label: mediaDeviceInfo.label,
-        value: mediaDeviceInfo.deviceId,
+        value: mediaDeviceInfo.deviceId
       });
     });
     if (!hasCurrentDevice) {
@@ -745,7 +752,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
       }
       this.videoInputDevices.push({
         label: mediaDeviceInfo.label,
-        value: mediaDeviceInfo.deviceId,
+        value: mediaDeviceInfo.deviceId
       });
     });
     if (!hasCurrentDevice) {
@@ -785,7 +792,7 @@ export class ChimeSdkWrapper implements DeviceChangeObserver {
           currentVideoInputDevice: this.currentVideoInputDevice,
           audioInputDevices: this.audioInputDevices,
           audioOutputDevices: this.audioOutputDevices,
-          videoInputDevices: this.videoInputDevices,
+          videoInputDevices: this.videoInputDevices
         });
       }
     );
@@ -859,7 +866,7 @@ export default function ChimeProvider(props: Props) {
     if (credentials.authToken && liveEventParticipant.attendeeId) {
       const requestHeaders = {
         Authorization: credentials.authToken,
-        AttendeeId: liveEventParticipant.attendeeId,
+        AttendeeId: liveEventParticipant.attendeeId
       } as RequestHeadersType;
 
       chimeSdkWrapper.setRequestHeaders(requestHeaders);
